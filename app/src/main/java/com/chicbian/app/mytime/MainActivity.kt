@@ -1,10 +1,10 @@
 package com.chicbian.app.mytime
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.os.PowerManager
 import android.os.PowerManager.WakeLock
-import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import com.blankj.utilcode.util.TimeUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -12,7 +12,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
 
     companion object {
         private val HH_MM_SS: DateFormat = object : SimpleDateFormat("yyyy-MM-dd HH:mm:ss") {}
@@ -29,12 +29,10 @@ class MainActivity : AppCompatActivity() {
         time = object : Timer() {}
         time?.schedule(timeTask, 0, 1000);
 
-
         val pm: PowerManager = getSystemService(android.content.Context.POWER_SERVICE) as PowerManager
         m_wklk = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "cn")
         //设置保持唤醒
         m_wklk?.acquire()
-
     }
 
     private val timeTask: TimerTask? = object : TimerTask() {
@@ -44,8 +42,8 @@ class MainActivity : AppCompatActivity() {
             val week = TimeUtils.getUSWeek(times)
 
             runOnUiThread {
-                tv_current_time.text = times.substring(11, times.length)
-                tv_current_date.text = times.substring(5, 9) + " " + week
+                tv_current_time.text = TimeUtils.getNowString().substring(11, times.length)
+                tv_current_date.text = times.substring(5, 10) + " " + week
             }
         }
     }
